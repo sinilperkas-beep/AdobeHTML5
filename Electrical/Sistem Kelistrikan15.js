@@ -12535,11 +12535,11 @@ if (reversed == null) { reversed = false; }
 
 	this.pPlus = new lib.titik();
 	this.pPlus.name = "pPlus";
-	this.pPlus.setTransform(1831.55,260.05,0.9992,0.9992,97.2472,0,0,0.7,-0.1);
+	this.pPlus.setTransform(1831.55,260,0.9992,0.9992,97.2474,0,0,0.7,-0.1);
 
 	this.probePlus = new lib.probe_plus1();
 	this.probePlus.name = "probePlus";
-	this.probePlus.setTransform(1759.25,311.5,0.999,0.999,52.2546,0,0,1,90.3);
+	this.probePlus.setTransform(1759.3,311.5,0.999,0.999,52.2554,0,0,1.1,90.3);
 
 	this.probePlus_1 = new lib.probe_plus();
 	this.probePlus_1.name = "probePlus_1";
@@ -12977,7 +12977,7 @@ if (reversed == null) { reversed = false; }
 
 	this.shape_32 = new cjs.Shape();
 	this.shape_32.graphics.f().s("#FFFFFF").ss(1,1,1).p("ArVEwIAApfIWrAAIAAJf");
-	this.shape_32.setTransform(1451.8429,905.4017,0.7767,0.7767);
+	this.shape_32.setTransform(1451.8406,905.3867,0.7767,0.7767);
 
 	this.acsw = new lib.acsw();
 	this.acsw.name = "acsw";
@@ -13260,50 +13260,50 @@ if (reversed == null) { reversed = false; }
 
 	this.relayC = new lib.relaycopy2();
 	this.relayC.name = "relayC";
-	this.relayC.setTransform(492.25,110.55,0.7767,0.7767,0,0,0,0.6,2);
+	this.relayC.setTransform(492.3,110.6,0.7767,0.7767,0,0,0,0.7,2.2);
 
 	this.c30 = new lib.BTN_RLY();
 	this.c30.name = "c30";
-	this.c30.setTransform(512.5,154.4,0.9434,0.9434,0,0,0,1,1.6);
+	this.c30.setTransform(512.55,154.4,0.9434,0.9434,0,0,0,1.1,1.7);
 	new cjs.ButtonHelper(this.c30, 0, 1, 2);
 
 	this.c87 = new lib.BTN_RLY();
 	this.c87.name = "c87";
-	this.c87.setTransform(486.8,154.4,0.9434,0.9434,0,0,0,1,1.6);
+	this.c87.setTransform(486.85,154.4,0.9434,0.9434,0,0,0,1.1,1.7);
 	new cjs.ButtonHelper(this.c87, 0, 1, 2);
 
 	this.c86 = new lib.BTN_RLY();
 	this.c86.name = "c86";
-	this.c86.setTransform(461.9,154.4,0.9434,0.9434,0,0,0,0.8,1.6);
+	this.c86.setTransform(461.95,154.4,0.9434,0.9434,0,0,0,0.9,1.7);
 	new cjs.ButtonHelper(this.c86, 0, 1, 2);
 
 	this.c85 = new lib.BTN_RLY();
 	this.c85.name = "c85";
-	this.c85.setTransform(436.5,154.4,0.9434,0.9434,0,0,0,1.1,1.6);
+	this.c85.setTransform(436.45,154.4,0.9434,0.9434,0,0,0,1.1,1.7);
 	new cjs.ButtonHelper(this.c85, 0, 1, 2);
 
 	this.relayB = new lib.relaycopy();
 	this.relayB.name = "relayB";
-	this.relayB.setTransform(850.15,109.35,0.7767,0.7767,0,0,0,-0.2,0.3);
+	this.relayB.setTransform(850.1,109.35,0.7767,0.7767,0,0,0,-0.1,0.3);
 
 	this.b30 = new lib.BTN_RLY();
 	this.b30.name = "b30";
-	this.b30.setTransform(870.45,153.1,0.9434,0.9434,0,0,0,0.4,0.1);
+	this.b30.setTransform(870.35,153.1,0.9434,0.9434,0,0,0,0.4,0.1);
 	new cjs.ButtonHelper(this.b30, 0, 1, 2);
 
 	this.b87 = new lib.BTN_RLY();
 	this.b87.name = "b87";
-	this.b87.setTransform(844.75,153.1,0.9434,0.9434,0,0,0,0.4,0.1);
+	this.b87.setTransform(844.65,153.1,0.9434,0.9434,0,0,0,0.4,0.1);
 	new cjs.ButtonHelper(this.b87, 0, 1, 2);
 
 	this.b86 = new lib.BTN_RLY();
 	this.b86.name = "b86";
-	this.b86.setTransform(820,153.1,0.9434,0.9434,0,0,0,0.3,0.1);
+	this.b86.setTransform(820,153.1,0.9434,0.9434,0,0,0,0.4,0.1);
 	new cjs.ButtonHelper(this.b86, 0, 1, 2);
 
 	this.b85 = new lib.BTN_RLY();
 	this.b85.name = "b85";
-	this.b85.setTransform(794.5,153.1,0.9434,0.9434,0,0,0,0.6,0.1);
+	this.b85.setTransform(794.5,153.1,0.9434,0.9434,0,0,0,0.7,0.1);
 	new cjs.ButtonHelper(this.b85, 0, 1, 2);
 
 	this.relayA = new lib.relay();
@@ -13363,23 +13363,23 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/Bitmap1.png?1786337441992", id:"Bitmap1"},
-		{src:"images/Bitmap10.png?1786337441992", id:"Bitmap10"},
-		{src:"images/Bitmap11.png?1786337441992", id:"Bitmap11"},
-		{src:"images/Bitmap11blower.png?1786337441992", id:"Bitmap11blower"},
-		{src:"images/Bitmap2.png?1786337441992", id:"Bitmap2"},
-		{src:"images/Bitmap3.png?1786337441992", id:"Bitmap3"},
-		{src:"images/Bitmap4.png?1786337441992", id:"Bitmap4"},
-		{src:"images/Bitmap5.png?1786337441992", id:"Bitmap5"},
-		{src:"images/Bitmap6.png?1786337441992", id:"Bitmap6"},
-		{src:"images/BitmapAki.png?1786337441992", id:"BitmapAki"},
-		{src:"images/logo.png?1786337441993", id:"logo"},
-		{src:"images/selector.png?1786337441993", id:"selector"},
-		{src:"images/Sepatu.png?1786337441993", id:"Sepatu"},
-		{src:"images/Skala.png?1786337441993", id:"Skala"},
-		{src:"sounds/bunyirelay.mp3?1786337441993", id:"bunyirelay"},
-		{src:"sounds/horn.mp3?1786337441993", id:"horn"},
-		{src:"sounds/kuncialarm.mp3?1786337441993", id:"kuncialarm"}
+		{src:"images/Bitmap1.png?1786341946166", id:"Bitmap1"},
+		{src:"images/Bitmap10.png?1786341946166", id:"Bitmap10"},
+		{src:"images/Bitmap11.png?1786341946166", id:"Bitmap11"},
+		{src:"images/Bitmap11blower.png?1786341946166", id:"Bitmap11blower"},
+		{src:"images/Bitmap2.png?1786341946166", id:"Bitmap2"},
+		{src:"images/Bitmap3.png?1786341946166", id:"Bitmap3"},
+		{src:"images/Bitmap4.png?1786341946166", id:"Bitmap4"},
+		{src:"images/Bitmap5.png?1786341946166", id:"Bitmap5"},
+		{src:"images/Bitmap6.png?1786341946166", id:"Bitmap6"},
+		{src:"images/BitmapAki.png?1786341946166", id:"BitmapAki"},
+		{src:"images/logo.png?1786341946166", id:"logo"},
+		{src:"images/selector.png?1786341946166", id:"selector"},
+		{src:"images/Sepatu.png?1786341946166", id:"Sepatu"},
+		{src:"images/Skala.png?1786341946166", id:"Skala"},
+		{src:"sounds/bunyirelay.mp3?1786341946166", id:"bunyirelay"},
+		{src:"sounds/horn.mp3?1786341946166", id:"horn"},
+		{src:"sounds/kuncialarm.mp3?1786341946166", id:"kuncialarm"}
 	],
 	preloads: []
 };
