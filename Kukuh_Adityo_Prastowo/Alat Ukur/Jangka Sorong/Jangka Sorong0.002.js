@@ -176,7 +176,7 @@ if (reversed == null) { reversed = false; }
 	this.hasil = new cjs.Text("", "36px 'Arial'");
 	this.hasil.name = "hasil";
 	this.hasil.lineHeight = 42;
-	this.hasil.lineWidth = 366;
+	this.hasil.lineWidth = 334;
 	this.hasil.parent = this;
 	this.hasil.setTransform(-47.75,-19.45);
 
@@ -184,7 +184,7 @@ if (reversed == null) { reversed = false; }
 
 	this._renderFirstFrame();
 
-}).prototype = getMCSymbolPrototype(lib.hasil, new cjs.Rectangle(-49.7,-21.4,370.09999999999997,44.2), null);
+}).prototype = getMCSymbolPrototype(lib.hasil, new cjs.Rectangle(-49.7,-21.4,337.8,44.2), null);
 
 
 (lib.ekor = function(mode,startPosition,loop,reversed) {
@@ -565,7 +565,7 @@ if (reversed == null) { reversed = false; }
 		const dasarWidth = this.dasar.nominalBounds.width;
 		const dasarHeight = this.dasar.nominalBounds.height;
 		
-		const totalStrips = 20;
+		const totalStrips = 50;
 		const panjangNonius = dasarWidth * 19 / 20;
 		const spacing = panjangNonius / totalStrips;
 		
@@ -575,88 +575,144 @@ if (reversed == null) { reversed = false; }
 		
 		this.stripLines = [];
 		
-		// Buat garis strip dan label
+		// ======================================================
+		// BUAT GARIS STRIP DAN LABEL
+		// ======================================================
+		
 		for (let i = 0; i <= totalStrips; i++) {
-		  const isLabel = (i % 2 === 0);
+		
+		  // Pola:
+		  // PANJANG - PENDEK - PENDEK - PENDEK - PENDEK
+		  // PANJANG - PENDEK - PENDEK - PENDEK - PENDEK
+		  //
+		  // 0 = panjang
+		  // 5 = panjang
+		  // 10 = panjang
+		  // 15 = panjang
+		  // dst.
+		
+		  const isLabel = (i % 5 === 0);
 		  const xPos = i * spacing;
 		
+		  // ====================================================
+		  // BUAT GARIS
+		  // ====================================================
+		
 		  const line = new createjs.Shape();
-		  line.graphics.setStrokeStyle(1).beginStroke("#000000");
+		
+		  line.graphics
+		    .setStrokeStyle(1)
+		    .beginStroke("#000000");
 		
 		  const lineHeight = isLabel ? longLineHeight : shortLineHeight;
-		  line.graphics.moveTo(0, baselineY).lineTo(0, baselineY + lineHeight);
-		  line.graphics.endStroke();
+		
+		  line.graphics
+		    .moveTo(0, baselineY)
+		    .lineTo(0, baselineY + lineHeight)
+		    .endStroke();
 		
 		  line.x = xPos;
 		  line.y = 0;
+		
 		  this.addChild(line);
 		  this.stripLines.push(line);
 		
-		  if (isLabel && i / 2 <= 10) {
-		    const angka = i / 2;
+		  // ====================================================
+		  // LABEL ANGKA
+		  // ====================================================
+		
+		  if (isLabel && i / 5 <= 10) {
+		    const angka = i / 5;
 		    const warnaLabel = (angka === 0) ? "red" : "#000";
 		    const ketebalan = (angka === 0) ? "bold" : "normal";
 		    const ukuranFont = Math.round(dasarHeight * 0.2);
 		
-		    const label = new createjs.Text(angka.toString(), `${ketebalan} ${ukuranFont}px Arial`, warnaLabel);
+		    const label = new createjs.Text(
+		      angka.toString(),
+		      `${ketebalan} ${ukuranFont}px Arial`,
+		      warnaLabel
+		    );
+		
 		    label.textAlign = "center";
 		    label.x = xPos;
 		    label.y = baselineY + lineHeight + 2;
+		
 		    this.addChild(label);
 		  }
 		}
 		
-		// Fungsi update posisi dan sorot strip merah
+		// ======================================================
+		// FUNGSI UPDATE POSISI DAN SOROT GARIS MERAH
+		// ======================================================
+		
 		this.updatePositionsInMicrometer = function() {
-		  const micrometer = this.parent; // Pastikan parent ini adalah micrometer
+		
+		  const micrometer = this.parent;
 		
 		  if (this.stripLines.length > 0) {
 		    const line0 = this.stripLines[0];
 		    const posInMicrometer = this.localToLocal(line0.x, line0.y, micrometer);
 		
-		    // Pastikan nilai mulai ada
-		    if (typeof this.parent.mulai !== "number") this.parent.mulai = 0;
+		    // ==================================================
+		    // PASTIKAN NILAI MULAI ADA
+		    // ==================================================
+		    if (typeof this.parent.mulai !== "number") {
+		      this.parent.mulai = 0;
+		    }
 		
-		    // Ambil status multiSatuan (10 = mm, 1 = cm)
+		    // ==================================================
+		    // CEK MODE SATUAN DARI PARENT (10 = mm, 1 = cm)
+		    // ==================================================
 		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm");
 		
-		    // Hitung dasar nilai dalam mm
-		    const nilaiMM = (this.parent.mulai * 10) + (posInMicrometer.x / 0.5) * 0.05;
-		    const roundedMM = Math.round(nilaiMM / 0.05) * 0.05;
+		    // ==================================================
+		    // HITUNG NILAI AWAL DALAM MM
+		    // ==================================================
+		    const nilaiAwal = (this.parent.mulai * 10) + (posInMicrometer.x / 0.5) * 0.05;
 		
-		    // ============ FORMAT HASIL DAN TEKS SATUAN ============
-		    if (isMM) {
-		      // Mode MM: 12.45 mm
-		      const roundedX = roundedMM.toFixed(2);
-		      if (micrometer.hasil && micrometer.hasil.hasil) {
-		        micrometer.hasil.hasil.text = `${roundedX} mm`;
-		      }
-		    } else {
-		      // Mode CM: 1.245 cm (dibagi 10 dari mm)
-		      const nilaiCM = roundedMM / 10;
-		      const roundedX = nilaiCM.toFixed(3);
-		      if (micrometer.hasil && micrometer.hasil.hasil) {
-		        micrometer.hasil.hasil.text = `${roundedX} cm`;
+		    // ==================================================
+		    // BULATKAN KE KELIPATAN 0.02
+		    // ==================================================
+		    const roundedMM = Math.round(nilaiAwal / 0.02) * 0.02;
+		
+		    // ==================================================
+		    // FORMAT HASIL DAN TAMPILKAN
+		    // ==================================================
+		    if (micrometer.hasil && micrometer.hasil.hasil) {
+		      if (isMM) {
+		        // Mode MM: tampilkan 2 angka di belakang koma
+		        micrometer.hasil.hasil.text = `${roundedMM.toFixed(2)} mm`;
+		      } else {
+		        // Mode CM: bagi 10, tampilkan 3 angka di belakang koma
+		        const nilaiCM = roundedMM / 10;
+		        micrometer.hasil.hasil.text = `${nilaiCM.toFixed(3)} cm`;
 		      }
 		    }
 		
-		    // ============ LOGIKA SOROT STRIP MERAH ============
-		    // Ambil nilai desimal dari nilai mm
+		    // ==================================================
+		    // AMBIL NILAI DESIMAL (Berdasarkan basis mm)
+		    // ==================================================
 		    const desimal = +(roundedMM % 1).toFixed(2);
 		
-		    // Hitung index strip yang harus merah
-		    const nomorMerah = Math.round(desimal / 0.05);
+		    // ==================================================
+		    // TENTUKAN GARIS MERAH
+		    // ==================================================
+		    // Setiap strip mengikuti kelipatan 0.02
+		    const nomorMerah = Math.round(desimal / 0.02);
 		
-		    // Update tampilan semua strip
+		    // ==================================================
+		    // UPDATE SEMUA GARIS
+		    // ==================================================
 		    this.stripLines.forEach((garis, j) => {
-		      const isLabel = (j % 2 === 0);
+		      
+		      const isLabel = (j % 5 === 0);
 		      const isMerah = (j === nomorMerah);
-		
 		      const defaultHeight = isLabel ? longLineHeight : shortLineHeight;
-		      const extraHeight = isMerah ? dasarHeight * 0.2 : 0;
 		      const finalLineHeight = isMerah ? longLineHeight : defaultHeight;
+		      const extraHeight = isMerah ? dasarHeight * 0.2 : 0;
 		
-		      garis.graphics.clear()
+		      garis.graphics
+		        .clear()
 		        .setStrokeStyle(isMerah ? 3 : 1)
 		        .beginStroke(isMerah ? "red" : "#000000")
 		        .moveTo(0, baselineY - extraHeight)
@@ -666,7 +722,10 @@ if (reversed == null) { reversed = false; }
 		  }
 		};
 		
-		// Jalankan update tiap frame
+		// ======================================================
+		// UPDATE SETIAP FRAME
+		// ======================================================
+		
 		this.on("tick", () => {
 		  this.updatePositionsInMicrometer();
 		});
@@ -1096,7 +1155,7 @@ if (reversed == null) { reversed = false; }
 
 
 // stage content:
-(lib.JangkaSorong5 = function(mode,startPosition,loop,reversed) {
+(lib.JangkaSorong0002 = function(mode,startPosition,loop,reversed) {
 if (loop == null) { loop = true; }
 if (reversed == null) { reversed = false; }
 	var props = new Object();
@@ -1143,7 +1202,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/BitmapGrTeknik.png?1788040187777", id:"BitmapGrTeknik"}
+		{src:"images/BitmapGrTeknik.png?1788040100922", id:"BitmapGrTeknik"}
 	],
 	preloads: []
 };
