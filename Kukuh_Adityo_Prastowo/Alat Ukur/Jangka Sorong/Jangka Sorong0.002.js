@@ -580,29 +580,11 @@ if (reversed == null) { reversed = false; }
 		// ======================================================
 		
 		for (let i = 0; i <= totalStrips; i++) {
-		
-		  // Pola:
-		  // PANJANG - PENDEK - PENDEK - PENDEK - PENDEK
-		  // PANJANG - PENDEK - PENDEK - PENDEK - PENDEK
-		  //
-		  // 0 = panjang
-		  // 5 = panjang
-		  // 10 = panjang
-		  // 15 = panjang
-		  // dst.
-		
 		  const isLabel = (i % 5 === 0);
 		  const xPos = i * spacing;
 		
-		  // ====================================================
-		  // BUAT GARIS
-		  // ====================================================
-		
 		  const line = new createjs.Shape();
-		
-		  line.graphics
-		    .setStrokeStyle(1)
-		    .beginStroke("#000000");
+		  line.graphics.setStrokeStyle(1).beginStroke("#000000");
 		
 		  const lineHeight = isLabel ? longLineHeight : shortLineHeight;
 		
@@ -617,10 +599,7 @@ if (reversed == null) { reversed = false; }
 		  this.addChild(line);
 		  this.stripLines.push(line);
 		
-		  // ====================================================
 		  // LABEL ANGKA
-		  // ====================================================
-		
 		  if (isLabel && i / 5 <= 10) {
 		    const angka = i / 5;
 		    const warnaLabel = (angka === 0) ? "red" : "#000";
@@ -646,65 +625,50 @@ if (reversed == null) { reversed = false; }
 		// ======================================================
 		
 		this.updatePositionsInMicrometer = function() {
-		
 		  const micrometer = this.parent;
 		
 		  if (this.stripLines.length > 0) {
 		    const line0 = this.stripLines[0];
 		    const posInMicrometer = this.localToLocal(line0.x, line0.y, micrometer);
 		
-		    // ==================================================
-		    // PASTIKAN NILAI MULAI ADA
-		    // ==================================================
 		    if (typeof this.parent.mulai !== "number") {
 		      this.parent.mulai = 0;
 		    }
 		
-		    // ==================================================
-		    // CEK MODE SATUAN DARI PARENT (10 = mm, 1 = cm)
-		    // ==================================================
-		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm");
+		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm" || this.parent.statusSatuanVal === "mm");
 		
-		    // ==================================================
-		    // HITUNG NILAI AWAL DALAM MM
-		    // ==================================================
-		    const nilaiAwal = (this.parent.mulai * 10) + (posInMicrometer.x / 0.5) * 0.05;
+		    // 1. Rasio lebar penggaris utama (15 cm = 150 mm)
+		    const widthUtama = (this.parent.penggaris && this.parent.penggaris.dasar) 
+		      ? this.parent.penggaris.dasar.nominalBounds.width 
+		      : dasarWidth;
+		      
+		    const pxPerMM = (widthUtama / 150); 
 		
-		    // ==================================================
-		    // BULATKAN KE KELIPATAN 0.02
-		    // ==================================================
-		    const roundedMM = Math.round(nilaiAwal / 0.02) * 0.02;
+		    // 2. Hitung total nilai mm murni
+		    const posisiX = Math.max(0, posInMicrometer.x); // Hindari nilai minus di ujung kiri
+		    const nilaiAwalMM = (this.parent.mulai * 10) + (posisiX / pxPerMM);
 		
-		    // ==================================================
-		    // FORMAT HASIL DAN TAMPILKAN
-		    // ==================================================
+		    // 3. Konversi ke Langkah Ketelitian 0.02 mm (Integer Steps)
+		    // Ini menghindari bug Javascript floating-point % 1
+		    const totalSteps002 = Math.round(nilaiAwalMM / 0.02);
+		    const roundedMM = totalSteps002 * 0.02;
+		
+		    // 4. Ambil Indeks Garis Merah secara Aman (0 sampai 49)
+		    // 1 mm terdiri dari 50 langkah kelipatan 0.02
+		    const nomorMerah = Math.abs(totalSteps002 % 50);
+		
+		    // 5. Tampilkan Hasil Ke Teks
 		    if (micrometer.hasil && micrometer.hasil.hasil) {
 		      if (isMM) {
-		        // Mode MM: tampilkan 2 angka di belakang koma
 		        micrometer.hasil.hasil.text = `${roundedMM.toFixed(2)} mm`;
 		      } else {
-		        // Mode CM: bagi 10, tampilkan 3 angka di belakang koma
 		        const nilaiCM = roundedMM / 10;
 		        micrometer.hasil.hasil.text = `${nilaiCM.toFixed(3)} cm`;
 		      }
 		    }
 		
-		    // ==================================================
-		    // AMBIL NILAI DESIMAL (Berdasarkan basis mm)
-		    // ==================================================
-		    const desimal = +(roundedMM % 1).toFixed(2);
-		
-		    // ==================================================
-		    // TENTUKAN GARIS MERAH
-		    // ==================================================
-		    // Setiap strip mengikuti kelipatan 0.02
-		    const nomorMerah = Math.round(desimal / 0.02);
-		
-		    // ==================================================
-		    // UPDATE SEMUA GARIS
-		    // ==================================================
+		    // 6. Update Render Garis
 		    this.stripLines.forEach((garis, j) => {
-		      
 		      const isLabel = (j % 5 === 0);
 		      const isMerah = (j === nomorMerah);
 		      const defaultHeight = isLabel ? longLineHeight : shortLineHeight;
@@ -1202,7 +1166,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/BitmapGrTeknik.png?1788040100922", id:"BitmapGrTeknik"}
+		{src:"images/BitmapGrTeknik.png?1788041239273", id:"BitmapGrTeknik"}
 	],
 	preloads: []
 };
