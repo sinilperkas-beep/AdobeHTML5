@@ -176,7 +176,7 @@ if (reversed == null) { reversed = false; }
 	this.hasil = new cjs.Text("", "36px 'Arial'");
 	this.hasil.name = "hasil";
 	this.hasil.lineHeight = 42;
-	this.hasil.lineWidth = 334;
+	this.hasil.lineWidth = 366;
 	this.hasil.parent = this;
 	this.hasil.setTransform(-47.75,-19.45);
 
@@ -184,7 +184,7 @@ if (reversed == null) { reversed = false; }
 
 	this._renderFirstFrame();
 
-}).prototype = getMCSymbolPrototype(lib.hasil, new cjs.Rectangle(-49.7,-21.4,337.8,44.2), null);
+}).prototype = getMCSymbolPrototype(lib.hasil, new cjs.Rectangle(-49.7,-21.4,370.09999999999997,44.2), null);
 
 
 (lib.ekor = function(mode,startPosition,loop,reversed) {
@@ -562,11 +562,12 @@ if (reversed == null) { reversed = false; }
 		if(this.totalFrames == 1) {
 			this.isSingleFrame = true;
 		}
+		// ============ 1. DIMENSI DASAR & STRIP NONIUS (0.02 mm) ============
 		const dasarWidth = this.dasar.nominalBounds.width;
 		const dasarHeight = this.dasar.nominalBounds.height;
 		
-		const totalStrips = 50;
-		const panjangNonius = dasarWidth * 19 / 20;
+		const totalStrips = 50;                       // 50 strip untuk ketelitian 0.02 mm
+		const panjangNonius = dasarWidth * 48/ 50;  // Skala 49/50
 		const spacing = panjangNonius / totalStrips;
 		
 		const shortLineHeight = dasarHeight * 0.08;
@@ -575,11 +576,9 @@ if (reversed == null) { reversed = false; }
 		
 		this.stripLines = [];
 		
-		// ======================================================
-		// BUAT GARIS STRIP DAN LABEL
-		// ======================================================
-		
+		// ============ 2. GENERATE GARIS STRIP & LABEL ANGKA ============
 		for (let i = 0; i <= totalStrips; i++) {
+		  // Label teks muncul tiap 5 strip (0, 1, 2, ..., 10)
 		  const isLabel = (i % 5 === 0);
 		  const xPos = i * spacing;
 		
@@ -587,43 +586,30 @@ if (reversed == null) { reversed = false; }
 		  line.graphics.setStrokeStyle(1).beginStroke("#000000");
 		
 		  const lineHeight = isLabel ? longLineHeight : shortLineHeight;
-		
-		  line.graphics
-		    .moveTo(0, baselineY)
-		    .lineTo(0, baselineY + lineHeight)
-		    .endStroke();
+		  line.graphics.moveTo(0, baselineY).lineTo(0, baselineY + lineHeight);
+		  line.graphics.endStroke();
 		
 		  line.x = xPos;
 		  line.y = 0;
-		
 		  this.addChild(line);
 		  this.stripLines.push(line);
 		
-		  // LABEL ANGKA
-		  if (isLabel && i / 5 <= 10) {
+		  // Buat Angka Nonius (0 s/d 10)
+		  if (isLabel) {
 		    const angka = i / 5;
 		    const warnaLabel = (angka === 0) ? "red" : "#000";
 		    const ketebalan = (angka === 0) ? "bold" : "normal";
 		    const ukuranFont = Math.round(dasarHeight * 0.2);
 		
-		    const label = new createjs.Text(
-		      angka.toString(),
-		      `${ketebalan} ${ukuranFont}px Arial`,
-		      warnaLabel
-		    );
-		
+		    const label = new createjs.Text(angka.toString(), `${ketebalan} ${ukuranFont}px Arial`, warnaLabel);
 		    label.textAlign = "center";
 		    label.x = xPos;
 		    label.y = baselineY + lineHeight + 2;
-		
 		    this.addChild(label);
 		  }
 		}
 		
-		// ======================================================
-		// FUNGSI UPDATE POSISI DAN SOROT GARIS MERAH
-		// ======================================================
-		
+		// ============ 3. FUNGSI UPDATE POSISI & PEMBACAAN ============
 		this.updatePositionsInMicrometer = function() {
 		  const micrometer = this.parent;
 		
@@ -631,52 +617,47 @@ if (reversed == null) { reversed = false; }
 		    const line0 = this.stripLines[0];
 		    const posInMicrometer = this.localToLocal(line0.x, line0.y, micrometer);
 		
-		    if (typeof this.parent.mulai !== "number") {
-		      this.parent.mulai = 0;
-		    }
+		    if (typeof this.parent.mulai !== "number") this.parent.mulai = 0;
 		
-		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm" || this.parent.statusSatuanVal === "mm");
+		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm");
 		
-		    // 1. Rasio lebar penggaris utama (15 cm = 150 mm)
-		    const widthUtama = (this.parent.penggaris && this.parent.penggaris.dasar) 
-		      ? this.parent.penggaris.dasar.nominalBounds.width 
-		      : dasarWidth;
-		      
-		    const pxPerMM = (widthUtama / 150); 
+		    // --- FORMULA PEMBACAAN 0.02 mm & KALIBRASI 150 MM ---
+		    // Menggunakan faktor skala (posInMicrometer.x / 0.2) agar tepat mencapai 150 mm pada skala penuh
+		    const nilaiMM = (this.parent.mulai * 10) + (posInMicrometer.x / 0.2) * 0.02;
+		    
+		    // Pembulatan ke kelipatan 0.02 mm
+		    const roundedMM = Math.round(nilaiMM / 0.02) * 0.02;
 		
-		    // 2. Hitung total nilai mm murni
-		    const posisiX = Math.max(0, posInMicrometer.x); // Hindari nilai minus di ujung kiri
-		    const nilaiAwalMM = (this.parent.mulai * 10) + (posisiX / pxPerMM);
-		
-		    // 3. Konversi ke Langkah Ketelitian 0.02 mm (Integer Steps)
-		    // Ini menghindari bug Javascript floating-point % 1
-		    const totalSteps002 = Math.round(nilaiAwalMM / 0.02);
-		    const roundedMM = totalSteps002 * 0.02;
-		
-		    // 4. Ambil Indeks Garis Merah secara Aman (0 sampai 49)
-		    // 1 mm terdiri dari 50 langkah kelipatan 0.02
-		    const nomorMerah = Math.abs(totalSteps002 % 50);
-		
-		    // 5. Tampilkan Hasil Ke Teks
-		    if (micrometer.hasil && micrometer.hasil.hasil) {
-		      if (isMM) {
-		        micrometer.hasil.hasil.text = `${roundedMM.toFixed(2)} mm`;
-		      } else {
-		        const nilaiCM = roundedMM / 10;
-		        micrometer.hasil.hasil.text = `${nilaiCM.toFixed(3)} cm`;
+		    // ============ FORMAT HASIL TEKS ============
+		    if (isMM) {
+		      // Tampilan mm (contoh: 150.00 mm)
+		      const roundedX = roundedMM.toFixed(2);
+		      if (micrometer.hasil && micrometer.hasil.hasil) {
+		        micrometer.hasil.hasil.text = `${roundedX} mm`;
+		      }
+		    } else {
+		      // Tampilan cm (contoh: 15.000 cm)
+		      const nilaiCM = roundedMM / 10;
+		      const roundedX = nilaiCM.toFixed(3);
+		      if (micrometer.hasil && micrometer.hasil.hasil) {
+		        micrometer.hasil.hasil.text = `${roundedX} cm`;
 		      }
 		    }
 		
-		    // 6. Update Render Garis
+		    // ============ LOGIKA STRIP MERAH BERIMPIT (0.02) ============
+		    const desimal = +((roundedMM % 1).toFixed(2));
+		    const nomorMerah = Math.round(desimal / 0.02);
+		
+		    // Dynamic rendering strip
 		    this.stripLines.forEach((garis, j) => {
 		      const isLabel = (j % 5 === 0);
 		      const isMerah = (j === nomorMerah);
-		      const defaultHeight = isLabel ? longLineHeight : shortLineHeight;
-		      const finalLineHeight = isMerah ? longLineHeight : defaultHeight;
-		      const extraHeight = isMerah ? dasarHeight * 0.2 : 0;
 		
-		      garis.graphics
-		        .clear()
+		      const defaultHeight = isLabel ? longLineHeight : shortLineHeight;
+		      const extraHeight = isMerah ? dasarHeight * 0.2 : 0;
+		      const finalLineHeight = isMerah ? longLineHeight : defaultHeight;
+		
+		      garis.graphics.clear()
 		        .setStrokeStyle(isMerah ? 3 : 1)
 		        .beginStroke(isMerah ? "red" : "#000000")
 		        .moveTo(0, baselineY - extraHeight)
@@ -686,10 +667,7 @@ if (reversed == null) { reversed = false; }
 		  }
 		};
 		
-		// ======================================================
-		// UPDATE SETIAP FRAME
-		// ======================================================
-		
+		// ============ 4. EVENT LOOP ============
 		this.on("tick", () => {
 		  this.updatePositionsInMicrometer();
 		});
@@ -708,7 +686,7 @@ if (reversed == null) { reversed = false; }
 	this.shape.setTransform(491.975,48.55);
 
 	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f().s("#000000").ss(1,1,1).p("EAwfgIGICiAAIAAghQAAgBgdAAEAtCgIIQgaAnhrAeQiNAnjIAAQjIAAiNgnQhsgegagnEAuNgIpQn7AAruAAQgDAAgCAAQgCAAgCAAUgToAAAgjRAABQkWAAkmAAA6FoCIADgEMA01AAAA94m2IA8hMIAVgcEgo1AG+QCsjYCPi1QEVlcBtiLI1GABIAAJvEgxIgIeQAAAHAAAIQABAGAAAHQABAUAAATQiLgEATAJIAAAhEgrCgInQjEAAjKAAQgDAAABAlEgo1AG+IALkBIqUgDIAAFwIFSAAQA3gCBBgMQCCgZAwg1g");
+	this.shape_1.graphics.f().s("#000000").ss(1,1,1).p("EAwfgIGICiAAIAAghQAAgBgdAAEAtCgIIQgaAnhrAeQiNAnjIAAQjIAAiNgnQhsgegagnEAuNgIpQn7AAruAAQgDAAgCAAQgCAAgCAAUgToAAAgjRAABQkWAAkmAAA6FoCIADgEMA01AAAA94m2IA8hMIAVgcEgo1AG+QCsjYCPi1QEVlcBtiLI1GABIAAJvIAAFwIFSAAQA3gCBBgMQCCgZAwg1IANgQIALkBIqUgDEgrCgInQjEAAjKAAQgDAAABAlEgxIgIeQAAAHAAAIQABAGAAAHQABAUAAATQiLgEATAJIAAAh");
 	this.shape_1.setTransform(251.0554,92.17);
 
 	this.shape_2 = new cjs.Shape();
@@ -1166,7 +1144,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/BitmapGrTeknik.png?1788041239273", id:"BitmapGrTeknik"}
+		{src:"images/BitmapGrTeknik.png?1788143440415", id:"BitmapGrTeknik"}
 	],
 	preloads: []
 };
