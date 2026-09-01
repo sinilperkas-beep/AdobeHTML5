@@ -3,7 +3,7 @@
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
-		{name:"micrometer50_atlas_1", frames: [[530,323,863,124],[0,0,1220,287],[0,289,528,230],[1222,0,438,321]]}
+		{name:"micrometer50_atlas_1", frames: [[0,0,1789,409],[530,734,863,124],[0,411,1220,287],[0,700,528,230],[1222,411,438,321],[1662,411,335,73]]}
 ];
 
 
@@ -27,10 +27,17 @@ lib.ssMetadata = [
 
 
 
-(lib.CachedBmp_36 = function() {
-	this.initialize(img.CachedBmp_36);
+(lib.CachedBmp_40 = function() {
+	this.initialize(ss["micrometer50_atlas_1"]);
+	this.gotoAndStop(0);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.CachedBmp_39 = function() {
+	this.initialize(img.CachedBmp_39);
 }).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,3835,409);
+p.nominalBounds = new cjs.Rectangle(0,0,2199,383);
 
 
 (lib.CachedBmp_31 = function() {
@@ -41,28 +48,47 @@ p.nominalBounds = new cjs.Rectangle(0,0,3252,304);
 
 (lib.CachedBmp_30 = function() {
 	this.initialize(ss["micrometer50_atlas_1"]);
-	this.gotoAndStop(0);
+	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_29 = function() {
 	this.initialize(ss["micrometer50_atlas_1"]);
-	this.gotoAndStop(1);
+	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
 
 
 (lib.CachedBmp_28 = function() {
 	this.initialize(ss["micrometer50_atlas_1"]);
-	this.gotoAndStop(2);
+	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
 
 
+(lib.CachedBmp_38 = function() {
+	this.initialize(img.CachedBmp_38);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,2567,1445);
+
+
+(lib.CachedBmp_37 = function() {
+	this.initialize(img.CachedBmp_37);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,2574,1452);
+
+
 (lib.Bitmap1 = function() {
 	this.initialize(ss["micrometer50_atlas_1"]);
-	this.gotoAndStop(3);
+	this.gotoAndStop(4);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.BitmapGrTeknik = function() {
+	this.initialize(ss["micrometer50_atlas_1"]);
+	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 // helper functions:
 
@@ -273,14 +299,29 @@ if (reversed == null) { reversed = false; }
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
 	// Layer_1
-	this.instance = new lib.CachedBmp_36();
-	this.instance.setTransform(-0.35,-57.35,0.3208,0.3208);
+	this.instance = new lib.BitmapGrTeknik();
+	this.instance.setTransform(-15.95,-12.95,1.7774,0.4864);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+	this.instance_1 = new lib.BitmapGrTeknik();
+	this.instance_1.setTransform(-15.95,-12.95,1.7774,0.4864);
+
+	this.instance_2 = new lib.BitmapGrTeknik();
+	this.instance_2.setTransform(-15.95,-12.95,1.7774,0.4864);
+
+	this.instance_3 = new lib.BitmapGrTeknik();
+	this.instance_3.setTransform(-15.95,-12.95,1.7774,0.4864);
+
+	this.instance_4 = new lib.CachedBmp_40();
+	this.instance_4.setTransform(-0.4,-57.35,0.3208,0.3208);
+
+	this.instance_5 = new lib.CachedBmp_39();
+	this.instance_5.setTransform(524.6,-52.95,0.3208,0.3208);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_5},{t:this.instance_4},{t:this.instance_3},{t:this.instance_2},{t:this.instance_1},{t:this.instance}]}).wait(1));
 
 	this._renderFirstFrame();
 
-}).prototype = getMCSymbolPrototype(lib.rachet, new cjs.Rectangle(-0.3,-57.3,1230.3,131.2), null);
+}).prototype = getMCSymbolPrototype(lib.rachet, new cjs.Rectangle(-15.9,-57.3,1246,131.2), null);
 
 
 (lib.kalibrasiBtn = function(mode,startPosition,loop,reversed) {
@@ -1048,7 +1089,7 @@ if (reversed == null) { reversed = false; }
 
 	this._renderFirstFrame();
 
-}).prototype = getMCSymbolPrototype(lib.Micrometer, new cjs.Rectangle(-1464.1,-418.1,3075.8999999999996,720.6), null);
+}).prototype = getMCSymbolPrototype(lib.Micrometer, new cjs.Rectangle(-1464.1,-418.1,3076,720.6), null);
 
 
 // stage content:
@@ -1070,10 +1111,151 @@ if (reversed == null) { reversed = false; }
 
 	this.timeline.addTween(cjs.Tween.get(this.micrometer).wait(1));
 
+	// BG
+	this.instance = new lib.CachedBmp_38();
+	this.instance.setTransform(-3.45,-1.35,0.5,0.5);
+
+	this.instance_1 = new lib.BitmapGrTeknik();
+	this.instance_1.setTransform(55.8,654.8,0.7814,0.7814);
+
+	this.instance_2 = new lib.BitmapGrTeknik();
+	this.instance_2.setTransform(844.5,654.8,0.7814,0.7814);
+
+	this.instance_3 = new lib.BitmapGrTeknik();
+	this.instance_3.setTransform(578.8,654.8,0.7814,0.7814);
+
+	this.instance_4 = new lib.BitmapGrTeknik();
+	this.instance_4.setTransform(321.55,654.8,0.7814,0.7814);
+
+	this.instance_5 = new lib.BitmapGrTeknik();
+	this.instance_5.setTransform(967.9,594.05,0.7814,0.7814);
+
+	this.instance_6 = new lib.BitmapGrTeknik();
+	this.instance_6.setTransform(702.1,594.05,0.7814,0.7814);
+
+	this.instance_7 = new lib.BitmapGrTeknik();
+	this.instance_7.setTransform(436.4,594.05,0.7814,0.7814);
+
+	this.instance_8 = new lib.BitmapGrTeknik();
+	this.instance_8.setTransform(179.15,594.05,0.7814,0.7814);
+
+	this.instance_9 = new lib.BitmapGrTeknik();
+	this.instance_9.setTransform(55.8,523.85,0.7814,0.7814);
+
+	this.instance_10 = new lib.BitmapGrTeknik();
+	this.instance_10.setTransform(844.5,523.85,0.7814,0.7814);
+
+	this.instance_11 = new lib.BitmapGrTeknik();
+	this.instance_11.setTransform(578.8,523.85,0.7814,0.7814);
+
+	this.instance_12 = new lib.BitmapGrTeknik();
+	this.instance_12.setTransform(321.55,523.85,0.7814,0.7814);
+
+	this.instance_13 = new lib.BitmapGrTeknik();
+	this.instance_13.setTransform(55.8,398.55,0.7814,0.7814);
+
+	this.instance_14 = new lib.BitmapGrTeknik();
+	this.instance_14.setTransform(844.5,398.55,0.7814,0.7814);
+
+	this.instance_15 = new lib.BitmapGrTeknik();
+	this.instance_15.setTransform(578.8,398.55,0.7814,0.7814);
+
+	this.instance_16 = new lib.BitmapGrTeknik();
+	this.instance_16.setTransform(321.55,398.55,0.7814,0.7814);
+
+	this.instance_17 = new lib.BitmapGrTeknik();
+	this.instance_17.setTransform(960.3,333.1,0.7814,0.7814);
+
+	this.instance_18 = new lib.BitmapGrTeknik();
+	this.instance_18.setTransform(695.5,333.1,0.7814,0.7814);
+
+	this.instance_19 = new lib.BitmapGrTeknik();
+	this.instance_19.setTransform(429.75,333.1,0.7814,0.7814);
+
+	this.instance_20 = new lib.BitmapGrTeknik();
+	this.instance_20.setTransform(172.55,333.1,0.7814,0.7814);
+
+	this.instance_21 = new lib.BitmapGrTeknik();
+	this.instance_21.setTransform(57.65,264.75,0.7814,0.7814);
+
+	this.instance_22 = new lib.BitmapGrTeknik();
+	this.instance_22.setTransform(845.45,264.75,0.7814,0.7814);
+
+	this.instance_23 = new lib.BitmapGrTeknik();
+	this.instance_23.setTransform(579.7,264.75,0.7814,0.7814);
+
+	this.instance_24 = new lib.BitmapGrTeknik();
+	this.instance_24.setTransform(323.45,264.75,0.7814,0.7814);
+
+	this.instance_25 = new lib.BitmapGrTeknik();
+	this.instance_25.setTransform(967.9,201.15,0.7814,0.7814);
+
+	this.instance_26 = new lib.BitmapGrTeknik();
+	this.instance_26.setTransform(702.1,201.15,0.7814,0.7814);
+
+	this.instance_27 = new lib.BitmapGrTeknik();
+	this.instance_27.setTransform(436.4,201.15,0.7814,0.7814);
+
+	this.instance_28 = new lib.BitmapGrTeknik();
+	this.instance_28.setTransform(179.15,201.15,0.7814,0.7814);
+
+	this.instance_29 = new lib.BitmapGrTeknik();
+	this.instance_29.setTransform(55.8,140.4,0.7814,0.7814);
+
+	this.instance_30 = new lib.BitmapGrTeknik();
+	this.instance_30.setTransform(844.5,140.4,0.7814,0.7814);
+
+	this.instance_31 = new lib.BitmapGrTeknik();
+	this.instance_31.setTransform(578.8,140.4,0.7814,0.7814);
+
+	this.instance_32 = new lib.BitmapGrTeknik();
+	this.instance_32.setTransform(321.55,140.4,0.7814,0.7814);
+
+	this.instance_33 = new lib.BitmapGrTeknik();
+	this.instance_33.setTransform(960.3,73.95,0.7814,0.7814);
+
+	this.instance_34 = new lib.BitmapGrTeknik();
+	this.instance_34.setTransform(695.5,73.95,0.7814,0.7814);
+
+	this.instance_35 = new lib.BitmapGrTeknik();
+	this.instance_35.setTransform(429.75,73.95,0.7814,0.7814);
+
+	this.instance_36 = new lib.BitmapGrTeknik();
+	this.instance_36.setTransform(172.55,73.95,0.7814,0.7814);
+
+	this.instance_37 = new lib.BitmapGrTeknik();
+	this.instance_37.setTransform(57.65,4.7,0.7814,0.7814);
+
+	this.instance_38 = new lib.BitmapGrTeknik();
+	this.instance_38.setTransform(845.45,4.7,0.7814,0.7814);
+
+	this.instance_39 = new lib.BitmapGrTeknik();
+	this.instance_39.setTransform(579.7,4.7,0.7814,0.7814);
+
+	this.instance_40 = new lib.BitmapGrTeknik();
+	this.instance_40.setTransform(323.45,4.7,0.7814,0.7814);
+
+	this.instance_41 = new lib.BitmapGrTeknik();
+	this.instance_41.setTransform(967.9,454.55,0.7814,0.7814);
+
+	this.instance_42 = new lib.BitmapGrTeknik();
+	this.instance_42.setTransform(702.1,454.55,0.7814,0.7814);
+
+	this.instance_43 = new lib.BitmapGrTeknik();
+	this.instance_43.setTransform(436.4,454.55,0.7814,0.7814);
+
+	this.instance_44 = new lib.BitmapGrTeknik();
+	this.instance_44.setTransform(179.15,454.55,0.7814,0.7814);
+
+	this.instance_45 = new lib.CachedBmp_37();
+	this.instance_45.setTransform(-6.65,-5.1,0.5,0.5);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_45},{t:this.instance_44},{t:this.instance_43},{t:this.instance_42},{t:this.instance_41},{t:this.instance_40},{t:this.instance_39},{t:this.instance_38},{t:this.instance_37},{t:this.instance_36},{t:this.instance_35},{t:this.instance_34},{t:this.instance_33},{t:this.instance_32},{t:this.instance_31},{t:this.instance_30},{t:this.instance_29},{t:this.instance_28},{t:this.instance_27},{t:this.instance_26},{t:this.instance_25},{t:this.instance_24},{t:this.instance_23},{t:this.instance_22},{t:this.instance_21},{t:this.instance_20},{t:this.instance_19},{t:this.instance_18},{t:this.instance_17},{t:this.instance_16},{t:this.instance_15},{t:this.instance_14},{t:this.instance_13},{t:this.instance_12},{t:this.instance_11},{t:this.instance_10},{t:this.instance_9},{t:this.instance_8},{t:this.instance_7},{t:this.instance_6},{t:this.instance_5},{t:this.instance_4},{t:this.instance_3},{t:this.instance_2},{t:this.instance_1},{t:this.instance}]}).wait(1));
+
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(707.8,393.4,528.8,199.5);
+p.nominalBounds = new cjs.Rectangle(633.4,354.9,647.0000000000001,366.30000000000007);
 // library properties:
 lib.properties = {
 	id: '0EBB65583D4AB54DB138DE5BD487B772',
@@ -1083,9 +1265,11 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/CachedBmp_36.png?1788241404004", id:"CachedBmp_36"},
-		{src:"images/CachedBmp_31.png?1788241404004", id:"CachedBmp_31"},
-		{src:"images/micrometer50_atlas_1.png?1788241403956", id:"micrometer50_atlas_1"}
+		{src:"images/CachedBmp_39.png?1788245603092", id:"CachedBmp_39"},
+		{src:"images/CachedBmp_31.png?1788245603092", id:"CachedBmp_31"},
+		{src:"images/CachedBmp_38.png?1788245603092", id:"CachedBmp_38"},
+		{src:"images/CachedBmp_37.png?1788245603092", id:"CachedBmp_37"},
+		{src:"images/micrometer50_atlas_1.png?1788245603033", id:"micrometer50_atlas_1"}
 	],
 	preloads: []
 };
