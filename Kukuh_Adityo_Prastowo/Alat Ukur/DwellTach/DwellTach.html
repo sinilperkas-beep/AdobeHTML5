@@ -389,14 +389,14 @@ if (reversed == null) { reversed = false; }
 	cjs.MovieClip.apply(this,[props]);
 	// Layer_1
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f().s("#000000").ss(1,1,1).p("AhBiOICDAAIAAEdIiDAAg");
+	this.shape.graphics.f().s("#000000").ss(1,1,1).p("AiXiOIEvAAIAAEdIkvAAg");
 	this.shape.setTransform(0,0.025);
 	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f("#00FF00").s().p("AhBCPIAAkdICDAAIAAEdg");
+	this.shape_1.graphics.f("#00FF00").s().p("AiXCPIAAkdIEvAAIAAEdg");
 	this.shape_1.setTransform(0,0.025);
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).wait(1));
 	this._renderFirstFrame();
-}).prototype = getMCSymbolPrototype(lib.handle2, rect = new cjs.Rectangle(-7.6,-15.2,15.2,30.6), [rect]);
+}).prototype = getMCSymbolPrototype(lib.handle2, rect = new cjs.Rectangle(-16.2,-15.2,32.4,30.6), [rect]);
 (lib.handle = function(mode,startPosition,loop,reversed) {
 if (loop == null) { loop = true; }
 if (reversed == null) { reversed = false; }
@@ -409,14 +409,14 @@ if (reversed == null) { reversed = false; }
 	cjs.MovieClip.apply(this,[props]);
 	// Layer_1
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f().s("#000000").ss(1,1,1).p("AhBiOICDAAIAAEdIiDAAg");
-	this.shape.setTransform(0,0.025);
+	this.shape.graphics.f().s("#000000").ss(1,1,1).p("AiViRIErAAIAAEjIkrAAg");
+	this.shape.setTransform(0.3,0.275);
 	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f("#0000FF").s().p("AhBCPIAAkdICDAAIAAEdg");
-	this.shape_1.setTransform(0,0.025);
+	this.shape_1.graphics.f("#0000FF").s().p("AiVCSIAAkjIErAAIAAEjg");
+	this.shape_1.setTransform(0.3,0.275);
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).wait(1));
 	this._renderFirstFrame();
-}).prototype = getMCSymbolPrototype(lib.handle, rect = new cjs.Rectangle(-7.6,-15.2,15.2,30.6), [rect]);
+}).prototype = getMCSymbolPrototype(lib.handle, rect = new cjs.Rectangle(-15.7,-15.3,32,31.2), [rect]);
 (lib.garis1 = function(mode,startPosition,loop,reversed) {
 if (loop == null) { loop = true; }
 if (reversed == null) { reversed = false; }
@@ -1138,15 +1138,31 @@ if (reversed == null) { reversed = false; }
 		//
 		// Nilai 1 = posisi paling bawah
 		// Nilai 15 = posisi paling atas
-		//
-		// UBAH NILAI INI JIKA JARAK GERAK OBJEK
-		// DI TIMELINE ANDA BERBEDA
 		// =====================================================
 		var jarakMaksAngkat = 50;
 		// =====================================================
 		// ROTASI NOK
 		// =====================================================
 		var rotasiNok = 0;
+		// =====================================================
+		// GETARAN
+		// =====================================================
+		// Waktu animasi getaran
+		var getaranTime = 0;
+		// =====================================================
+		// GETARAN DESIMAL HASIL
+		//
+		// HANYA DESIMAL YANG BERGETAR
+		// =====================================================
+		var besarGetaranDesimal = 0.03;
+		// =====================================================
+		// GETARAN JARUM
+		//
+		// JARUM BERGOYANG SANGAT SEDIKIT
+		//
+		// ±0.7 derajat
+		// =====================================================
+		var besarGetaranJarum = 0.7;
 		// =====================================================
 		// UPDATE STATUS BELAJAR
 		// =====================================================
@@ -1226,7 +1242,8 @@ if (reversed == null) { reversed = false; }
 		    if (mode === "tach") {
 		        posisi.text =
 		            "TACHOMETER (RPM)";
-		    } else if (mode === "dwell") {
+		    }
+		    else if (mode === "dwell") {
 		        posisi.text =
 		            "SUDUT DWELL (DERAJAT)";
 		    }
@@ -1277,8 +1294,8 @@ if (reversed == null) { reversed = false; }
 		    // =================================================
 		    // NILAI 1
 		    // POSISI BAWAH
-		    // =================================================
-		    // Nilai 15
+		    //
+		    // NILAI 15
 		    // POSISI ATAS
 		    // =================================================
 		    angkat.y =
@@ -1290,9 +1307,19 @@ if (reversed == null) { reversed = false; }
 		}
 		// =====================================================
 		// HITUNG NILAI
-		// RUMUS ASLI
+		//
+		// gunakanGetaran = true
+		// untuk animasi berjalan.
+		//
+		// gunakanGetaran = false
+		// untuk drag / slider / posisi awal.
+		//
+		// GETARAN TIDAK MEMPENGARUHI POSISI JARUM.
 		// =====================================================
-		function calculateAndUpdate(degrees) {
+		function calculateAndUpdate(
+		    degrees,
+		    gunakanGetaran
+		) {
 		    if (degrees < 0) {
 		        degrees += 360;
 		    }
@@ -1305,21 +1332,49 @@ if (reversed == null) { reversed = false; }
 		    // TACH = RPM
 		    // =================================================
 		    if (mode === "tach") {
-		        if (degrees >= 0 && degrees <= 45) {
+		        if (
+		            degrees >= 0 &&
+		            degrees <= 45
+		        ) {
 		            convertedValue =
 		                (degrees / -45) * 6 + 6;
-		        } else if (degrees >= 315 && degrees < 360) {
+		        }
+		        else if (
+		            degrees >= 315 &&
+		            degrees < 360
+		        ) {
 		            convertedValue =
 		                12 -
-		                ((degrees - 315) / 45) * 6;
+		                (
+		                    (degrees - 315) /
+		                    45
+		                ) * 6;
+		        }
+		        // =================================================
+		        // HASIL DASAR
+		        // =================================================
+		        var hasil8 =
+		            convertedValue * 100;
+		        var hasil4 =
+		            convertedValue * 2 * 100;
+		        // =================================================
+		        // GETARAN HANYA PADA DESIMAL
+		        // =================================================
+		        if (gunakanGetaran) {
+		            hasil8 +=
+		                Math.sin(getaranTime) *
+		                besarGetaranDesimal;
+		            hasil4 +=
+		                Math.sin(getaranTime) *
+		                besarGetaranDesimal;
 		        }
 		        txtDerajat.text =
 		            "8 CYL: " +
-		            (convertedValue * 100).toFixed(2) +
+		            hasil8.toFixed(2) +
 		            " rpm";
 		        txtHasilKaliDua.text =
 		            "4 CYL: " +
-		            (convertedValue * 2 * 100).toFixed(2) +
+		            hasil4.toFixed(2) +
 		            " rpm";
 		    }
 		    // =================================================
@@ -1327,20 +1382,48 @@ if (reversed == null) { reversed = false; }
 		    // DWELL = DERAJAT
 		    // =================================================
 		    else if (mode === "dwell") {
-		        if (degrees >= 0 && degrees <= 45) {
+		        if (
+		            degrees >= 0 &&
+		            degrees <= 45
+		        ) {
 		            convertedValue =
 		                (degrees / 45) * 22.5 + 22.5;
-		        } else if (degrees >= 315 && degrees < 360) {
+		        }
+		        else if (
+		            degrees >= 315 &&
+		            degrees < 360
+		        ) {
 		            convertedValue =
-		                ((degrees - 315) / 45) * 22.5;
+		                (
+		                    (degrees - 315) /
+		                    45
+		                ) * 22.5;
+		        }
+		        // =================================================
+		        // HASIL DASAR
+		        // =================================================
+		        var hasilDwell8 =
+		            convertedValue;
+		        var hasilDwell4 =
+		            convertedValue * 2;
+		        // =================================================
+		        // GETARAN HANYA PADA DESIMAL
+		        // =================================================
+		        if (gunakanGetaran) {
+		            hasilDwell8 +=
+		                Math.sin(getaranTime) *
+		                besarGetaranDesimal;
+		            hasilDwell4 +=
+		                Math.sin(getaranTime) *
+		                besarGetaranDesimal;
 		        }
 		        txtDerajat.text =
 		            "8 CYL: " +
-		            convertedValue.toFixed(2) +
+		            hasilDwell8.toFixed(2) +
 		            " °";
 		        txtHasilKaliDua.text =
 		            "4 CYL: " +
-		            (convertedValue * 2).toFixed(2) +
+		            hasilDwell4.toFixed(2) +
 		            " °";
 		    }
 		}
@@ -1387,15 +1470,15 @@ if (reversed == null) { reversed = false; }
 		    jarum.rotation;
 		// =====================================================
 		// POSISI AKTUAL JARUM
+		//
+		// INI ADALAH POSISI CENTER / NILAI SEBENARNYA
+		//
+		// TIDAK ADA GETARAN DI SINI
 		// =====================================================
 		var currentRotation =
 		    jarum.rotation;
 		// =====================================================
-		// GETARAN
-		// =====================================================
-		var getaranTime = 0;
-		// =====================================================
-		// KONVERSI ROTASI KE BENTUK -45 s/d 45
+		// KONVERSI ROTASI KE BENTUK -180 s/d 180
 		// =====================================================
 		function rotasiNormal(degrees) {
 		    while (degrees > 180) {
@@ -1410,7 +1493,8 @@ if (reversed == null) { reversed = false; }
 		// SELISIH SUDUT
 		// =====================================================
 		function selisihSudut(a, b) {
-		    var d = b - a;
+		    var d =
+		        b - a;
 		    while (d > 180) {
 		        d -= 360;
 		    }
@@ -1425,60 +1509,81 @@ if (reversed == null) { reversed = false; }
 		// JARUM
 		// NOK
 		// ANGKAT
+		// TEXT DESIMAL
 		// =====================================================
-		this.addEventListener("tick", function() {
-		    // =================================================
-		    // JARUM
-		    // =================================================
-		    var selisih =
-		        selisihSudut(
-		            currentRotation,
-		            targetRotation
+		this.addEventListener(
+		    "tick",
+		    function() {
+		        // =================================================
+		        // JARUM
+		        // =================================================
+		        var selisih =
+		            selisihSudut(
+		                currentRotation,
+		                targetRotation
+		            );
+		        // =================================================
+		        // GERAK SMOOTH
+		        // =================================================
+		        currentRotation +=
+		            selisih * 0.16;
+		        // =================================================
+		        // GETARAN JARUM
+		        //
+		        // CENTER TETAP currentRotation
+		        //
+		        // YANG BERGOYANG HANYA TAMPILANNYA
+		        // =================================================
+		        var getaranJarum =
+		            Math.sin(getaranTime) *
+		            besarGetaranJarum;
+		        var visualRotation =
+		            currentRotation +
+		            getaranJarum;
+		        // =================================================
+		        // RANGE TETAP
+		        // =================================================
+		        if (visualRotation > 45) {
+		            visualRotation = 45;
+		        }
+		        if (visualRotation < -45) {
+		            visualRotation = -45;
+		        }
+		        // =================================================
+		        // TAMPILKAN JARUM
+		        //
+		        // JARUM BERGOYANG SEDIKIT
+		        // =================================================
+		        jarum.rotation =
+		            visualRotation;
+		        // =================================================
+		        // WAKTU GETARAN
+		        // =================================================
+		        getaranTime += 0.45;
+		        // =================================================
+		        // UPDATE NILAI
+		        //
+		        // PENTING:
+		        // MENGGUNAKAN currentRotation
+		        //
+		        // BUKAN visualRotation
+		        //
+		        // JADI GOYANGAN JARUM TIDAK MENGUBAH HASIL
+		        // =================================================
+		        calculateAndUpdate(
+		            rotasiNormal(currentRotation),
+		            true
 		        );
-		    // =================================================
-		    // GERAK SMOOTH
-		    // =================================================
-		    currentRotation +=
-		        selisih * 0.16;
-		    // =================================================
-		    // GETARAN
-		    // =================================================
-		    getaranTime += 0.45;
-		    var getaran =
-		        Math.sin(getaranTime) * 0.5;
-		    // =================================================
-		    // POSISI VISUAL JARUM
-		    // =================================================
-		    var visualRotation =
-		        currentRotation + getaran;
-		    // =================================================
-		    // RANGE TETAP
-		    // =================================================
-		    if (visualRotation > 45) {
-		        visualRotation = 45;
+		        // =================================================
+		        // NOK BERPUTAR TERUS
+		        // =================================================
+		        updateNok();
+		        // =================================================
+		        // OBJEK ANGKAT
+		        // =================================================
+		        updateAngkat();
 		    }
-		    if (visualRotation < -45) {
-		        visualRotation = -45;
-		    }
-		    jarum.rotation =
-		        visualRotation;
-		    // =================================================
-		    // UPDATE NILAI
-		    // =================================================
-		    calculateAndUpdate(
-		        rotasiNormal(jarum.rotation)
-		    );
-		    // =================================================
-		    // NOK BERPUTAR TERUS
-		    // KECEPATAN BERDASARKAN SLIDER 1
-		    // =================================================
-		    updateNok();
-		    // =================================================
-		    // OBJEK ANGKAT
-		    // POSISI BERDASARKAN SLIDER 2
-		    // =================================================
-		    updateAngkat();
-		});
+		);
 		// =====================================================
 		// SET TARGET
 		// =====================================================
@@ -1489,313 +1594,357 @@ if (reversed == null) { reversed = false; }
 		// =====================================================
 		// SLIDER 1 → TACH + NOK
 		// =====================================================
-		handle1.on("pressmove", function(evt) {
-		    if (mode !== "tach") {
-		        return;
+		handle1.on(
+		    "pressmove",
+		    function(evt) {
+		        if (mode !== "tach") {
+		            return;
+		        }
+		        var p =
+		            root.globalToLocal(
+		                evt.stageX,
+		                evt.stageY
+		            );
+		        var newX =
+		            p.x;
+		        // =================================================
+		        // BATAS KIRI
+		        // =================================================
+		        if (newX < minX1) {
+		            newX = minX1;
+		        }
+		        // =================================================
+		        // BATAS KANAN
+		        // =================================================
+		        if (newX > maxX1) {
+		            newX = maxX1;
+		        }
+		        handle1.x =
+		            newX;
+		        // =================================================
+		        // RASIO SLIDER
+		        // =================================================
+		        var rasio =
+		            (newX - minX1) /
+		            (maxX1 - minX1);
+		        // =================================================
+		        // KECEPATAN NOK
+		        // 0 - 50
+		        // =================================================
+		        kecepatanNok =
+		            rasio * 50;
+		        // =================================================
+		        // JARUM
+		        // =================================================
+		        var degrees =
+		            sliderKeDerajat(rasio);
+		        setTargetJarum(degrees);
+		        // =================================================
+		        // HASIL
+		        // =================================================
+		        sembunyikanHasil();
 		    }
-		    var p =
-		        root.globalToLocal(
-		            evt.stageX,
-		            evt.stageY
-		        );
-		    var newX =
-		        p.x;
-		    // =================================================
-		    // BATAS KIRI
-		    // =================================================
-		    if (newX < minX1) {
-		        newX = minX1;
-		    }
-		    // =================================================
-		    // BATAS KANAN
-		    // =================================================
-		    if (newX > maxX1) {
-		        newX = maxX1;
-		    }
-		    handle1.x =
-		        newX;
-		    // =================================================
-		    // RASIO SLIDER
-		    // =================================================
-		    var rasio =
-		        (newX - minX1) /
-		        (maxX1 - minX1);
-		    // =================================================
-		    // KECEPATAN NOK
-		    // 0 - 50
-		    // =================================================
-		    kecepatanNok =
-		        rasio * 50;
-		    // =================================================
-		    // JARUM
-		    // =================================================
-		    var degrees =
-		        sliderKeDerajat(rasio);
-		    setTargetJarum(degrees);
-		    // =================================================
-		    // HASIL
-		    // =================================================
-		    sembunyikanHasil();
-		});
+		);
 		// =====================================================
 		// SLIDER 2 → DWELL + MAKSIMAL ANGKAT
 		// =====================================================
-		handle2.on("pressmove", function(evt) {
-		    if (mode !== "dwell") {
-		        return;
-		    }
-		    var p =
-		        root.globalToLocal(
-		            evt.stageX,
-		            evt.stageY
-		        );
-		    var newX =
-		        p.x;
-		    // =================================================
-		    // BATAS KIRI
-		    // =================================================
-		    if (newX < minX2) {
-		        newX = minX2;
-		    }
-		    // =================================================
-		    // BATAS KANAN
-		    // =================================================
-		    if (newX > maxX2) {
-		        newX = maxX2;
-		    }
-		    handle2.x =
-		        newX;
-		    // =================================================
-		    // RASIO SLIDER
-		    // =================================================
-		    var rasio =
-		        (newX - minX2) /
-		        (maxX2 - minX2);
-		    // =================================================
-		    // MAKSIMAL ANGKAT
-		    // 1 - 15
-		    // =================================================
-		    maksAngkat =
-		        1 + (rasio * 14);
-		    // =================================================
-		    // JARUM
-		    // =================================================
-		    var degrees =
-		        sliderKeDerajat(rasio);
-		    setTargetJarum(degrees);
-		    // =================================================
-		    // HASIL
-		    // =================================================
-		    sembunyikanHasil();
-		});
-		// =====================================================
-		// DRAG JARUM
-		// =====================================================
-		jarum.addEventListener("pressmove", function(event) {
-		    var dx =
-		        event.stageX - centerX;
-		    var dy =
-		        event.stageY - centerY;
-		    var angle =
-		        Math.atan2(dy, dx);
-		    var degrees =
-		        angle * (180 / Math.PI);
-		    // =================================================
-		    // KODE ASLI
-		    // =================================================
-		    degrees =
-		        degrees + 90;
-		    if (degrees < 0) {
-		        degrees += 360;
-		    }
-		    if (degrees >= 45 && degrees <= 315) {
-		        degrees =
-		            degrees < 180
-		                ? 45
-		                : 315;
-		    }
-		    // =================================================
-		    // UBAH 315 MENJADI -45
-		    // =================================================
-		    var signedDegrees =
-		        degrees;
-		    if (signedDegrees > 180) {
-		        signedDegrees -= 360;
-		    }
-		    targetRotation =
-		        signedDegrees;
-		    currentRotation =
-		        signedDegrees;
-		    // =================================================
-		    // HASIL
-		    // =================================================
-		    sembunyikanHasil();
-		    // =================================================
-		    // HITUNG
-		    // =================================================
-		    calculateAndUpdate(degrees);
-		    // =================================================
-		    // SINKRON SLIDER
-		    // =================================================
-		    var rasio =
-		        derajatKeSlider(degrees);
-		    if (mode === "tach") {
-		        handle1.x =
-		            minX1 +
-		            rasio *
-		            (maxX1 - minX1);
-		        // Sinkron nilai
-		        kecepatanNok =
-		            rasio * 50;
-		    }
-		    else {
+		handle2.on(
+		    "pressmove",
+		    function(evt) {
+		        if (mode !== "dwell") {
+		            return;
+		        }
+		        var p =
+		            root.globalToLocal(
+		                evt.stageX,
+		                evt.stageY
+		            );
+		        var newX =
+		            p.x;
+		        // =================================================
+		        // BATAS KIRI
+		        // =================================================
+		        if (newX < minX2) {
+		            newX = minX2;
+		        }
+		        // =================================================
+		        // BATAS KANAN
+		        // =================================================
+		        if (newX > maxX2) {
+		            newX = maxX2;
+		        }
 		        handle2.x =
-		            minX2 +
-		            rasio *
+		            newX;
+		        // =================================================
+		        // RASIO SLIDER
+		        // =================================================
+		        var rasio =
+		            (newX - minX2) /
 		            (maxX2 - minX2);
-		        // Sinkron nilai
+		        // =================================================
+		        // MAKSIMAL ANGKAT
+		        // 1 - 15
+		        // =================================================
 		        maksAngkat =
 		            1 +
 		            (rasio * 14);
+		        // =================================================
+		        // JARUM
+		        // =================================================
+		        var degrees =
+		            sliderKeDerajat(rasio);
+		        setTargetJarum(degrees);
+		        // =================================================
+		        // HASIL
+		        // =================================================
+		        sembunyikanHasil();
 		    }
-		});
+		);
+		// =====================================================
+		// DRAG JARUM
+		// =====================================================
+		jarum.addEventListener(
+		    "pressmove",
+		    function(event) {
+		        var dx =
+		            event.stageX -
+		            centerX;
+		        var dy =
+		            event.stageY -
+		            centerY;
+		        var angle =
+		            Math.atan2(
+		                dy,
+		                dx
+		            );
+		        var degrees =
+		            angle *
+		            (180 / Math.PI);
+		        // =================================================
+		        // KODE ASLI
+		        // =================================================
+		        degrees =
+		            degrees + 90;
+		        if (degrees < 0) {
+		            degrees += 360;
+		        }
+		        if (
+		            degrees >= 45 &&
+		            degrees <= 315
+		        ) {
+		            degrees =
+		                degrees < 180
+		                    ? 45
+		                    : 315;
+		        }
+		        // =================================================
+		        // UBAH 315 MENJADI -45
+		        // =================================================
+		        var signedDegrees =
+		            degrees;
+		        if (signedDegrees > 180) {
+		            signedDegrees -= 360;
+		        }
+		        // =================================================
+		        // CENTER JARUM
+		        //
+		        // SAAT DRAG, GETARAN TIDAK DITERAPKAN
+		        // =================================================
+		        targetRotation =
+		            signedDegrees;
+		        currentRotation =
+		            signedDegrees;
+		        // =================================================
+		        // HASIL
+		        // =================================================
+		        sembunyikanHasil();
+		        // =================================================
+		        // HITUNG
+		        //
+		        // TANPA GETARAN SAAT DRAG
+		        // =================================================
+		        calculateAndUpdate(
+		            rotasiNormal(currentRotation),
+		            false
+		        );
+		        // =================================================
+		        // SINKRON SLIDER
+		        // =================================================
+		        var rasio =
+		            derajatKeSlider(degrees);
+		        if (mode === "tach") {
+		            handle1.x =
+		                minX1 +
+		                rasio *
+		                (maxX1 - minX1);
+		            // Sinkron nilai
+		            kecepatanNok =
+		                rasio * 50;
+		        }
+		        else {
+		            handle2.x =
+		                minX2 +
+		                rasio *
+		                (maxX2 - minX2);
+		            // Sinkron nilai
+		            maksAngkat =
+		                1 +
+		                (rasio * 14);
+		        }
+		    }
+		);
 		// =====================================================
 		// TOMBOL HASIL
 		// =====================================================
 		if (hasilBtn) {
-		    hasilBtn.on("click", function() {
-		        // =================================================
-		        // MODE BELAJAR
-		        // HASIL SELALU TAMPIL
-		        // =================================================
-		        if (modeBelajar) {
-		            isVisible = true;
+		    hasilBtn.on(
+		        "click",
+		        function() {
+		            // =================================================
+		            // MODE BELAJAR
+		            // HASIL SELALU TAMPIL
+		            // =================================================
+		            if (modeBelajar) {
+		                isVisible = true;
+		            }
+		            // =================================================
+		            // MODE LATIHAN
+		            // TOGGLE HASIL
+		            // =================================================
+		            else {
+		                isVisible =
+		                    !isVisible;
+		            }
+		            updateTampilanHasil();
+		            if (root.stage) {
+		                root.stage.update();
+		            }
 		        }
-		        // =================================================
-		        // MODE LATIHAN
-		        // TOGGLE HASIL
-		        // =================================================
-		        else {
-		            isVisible =
-		                !isVisible;
-		        }
-		        updateTampilanHasil();
-		        if (root.stage) {
-		            root.stage.update();
-		        }
-		    });
+		    );
 		}
 		// =====================================================
 		// TOMBOL BELAJAR
 		// =====================================================
 		if (belajarBtn) {
-		    belajarBtn.on("click", function() {
-		        modeBelajar =
-		            !modeBelajar;
-		        // =================================================
-		        // BELAJAR ON
-		        // =================================================
-		        if (modeBelajar) {
-		            isVisible = true;
+		    belajarBtn.on(
+		        "click",
+		        function() {
+		            modeBelajar =
+		                !modeBelajar;
+		            // =================================================
+		            // BELAJAR ON
+		            // =================================================
+		            if (modeBelajar) {
+		                isVisible = true;
+		            }
+		            // =================================================
+		            // BELAJAR OFF
+		            // =================================================
+		            else {
+		                isVisible = false;
+		            }
+		            updateTampilanHasil();
+		            if (root.stage) {
+		                root.stage.update();
+		            }
 		        }
-		        // =================================================
-		        // BELAJAR OFF
-		        // =================================================
-		        else {
-		            isVisible = false;
-		        }
-		        updateTampilanHasil();
-		        if (root.stage) {
-		            root.stage.update();
-		        }
-		    });
+		    );
 		}
 		// =====================================================
 		// BTN TACH
 		// =====================================================
-		btnTach.addEventListener("click", function() {
-		    mode = "tach";
-		    // Selector turun
-		    selector.y =
-		        selectorYAwal;
-		    // Dynamic Text
-		    updateDynamicText();
-		    // Sembunyikan hasil
-		    sembunyikanHasil();
-		    // =================================================
-		    // AMBIL NILAI SLIDER 1
-		    // =================================================
-		    var rasio =
-		        (handle1.x - minX1) /
-		        (maxX1 - minX1);
-		    if (rasio < 0) {
-		        rasio = 0;
+		btnTach.addEventListener(
+		    "click",
+		    function() {
+		        mode =
+		            "tach";
+		        // Selector turun
+		        selector.y =
+		            selectorYAwal;
+		        // Dynamic Text
+		        updateDynamicText();
+		        // Sembunyikan hasil
+		        sembunyikanHasil();
+		        // =================================================
+		        // AMBIL NILAI SLIDER 1
+		        // =================================================
+		        var rasio =
+		            (handle1.x - minX1) /
+		            (maxX1 - minX1);
+		        if (rasio < 0) {
+		            rasio = 0;
+		        }
+		        if (rasio > 1) {
+		            rasio = 1;
+		        }
+		        // =================================================
+		        // UPDATE KECEPATAN NOK
+		        // =================================================
+		        kecepatanNok =
+		            rasio * 50;
+		        // =================================================
+		        // UPDATE JARUM
+		        // =================================================
+		        var degrees =
+		            sliderKeDerajat(rasio);
+		        setTargetJarum(degrees);
+		        // =================================================
+		        // UPDATE NOK
+		        // =================================================
+		        updateNok();
 		    }
-		    if (rasio > 1) {
-		        rasio = 1;
-		    }
-		    // =================================================
-		    // UPDATE KECEPATAN NOK
-		    // =================================================
-		    kecepatanNok =
-		        rasio * 50;
-		    // =================================================
-		    // UPDATE JARUM
-		    // =================================================
-		    var degrees =
-		        sliderKeDerajat(rasio);
-		    setTargetJarum(degrees);
-		    // =================================================
-		    // UPDATE NOK
-		    // =================================================
-		    updateNok();
-		});
+		);
 		// =====================================================
 		// BTN DWELL
 		// =====================================================
-		btnDwell.addEventListener("click", function() {
-		    mode = "dwell";
-		    // Selector naik
-		    selector.y =
-		        selectorYAwal -
-		        selectorOffsetAtas;
-		    // Dynamic Text
-		    updateDynamicText();
-		    // Sembunyikan hasil
-		    sembunyikanHasil();
-		    // =================================================
-		    // AMBIL NILAI SLIDER 2
-		    // =================================================
-		    var rasio =
-		        (handle2.x - minX2) /
-		        (maxX2 - minX2);
-		    if (rasio < 0) {
-		        rasio = 0;
+		btnDwell.addEventListener(
+		    "click",
+		    function() {
+		        mode =
+		            "dwell";
+		        // Selector naik
+		        selector.y =
+		            selectorYAwal -
+		            selectorOffsetAtas;
+		        // Dynamic Text
+		        updateDynamicText();
+		        // Sembunyikan hasil
+		        sembunyikanHasil();
+		        // =================================================
+		        // AMBIL NILAI SLIDER 2
+		        // =================================================
+		        var rasio =
+		            (handle2.x - minX2) /
+		            (maxX2 - minX2);
+		        if (rasio < 0) {
+		            rasio = 0;
+		        }
+		        if (rasio > 1) {
+		            rasio = 1;
+		        }
+		        // =================================================
+		        // UPDATE MAKSIMAL ANGKAT
+		        // =================================================
+		        maksAngkat =
+		            1 +
+		            (rasio * 14);
+		        // =================================================
+		        // UPDATE JARUM
+		        // =================================================
+		        var degrees =
+		            sliderKeDerajat(rasio);
+		        setTargetJarum(degrees);
+		        // =================================================
+		        // UPDATE ANGKAT
+		        // =================================================
+		        updateAngkat();
 		    }
-		    if (rasio > 1) {
-		        rasio = 1;
-		    }
-		    // =================================================
-		    // UPDATE MAKSIMAL ANGKAT
-		    // =================================================
-		    maksAngkat =
-		        1 +
-		        (rasio * 14);
-		    // =================================================
-		    // UPDATE JARUM
-		    // =================================================
-		    var degrees =
-		        sliderKeDerajat(rasio);
-		    setTargetJarum(degrees);
-		    // =================================================
-		    // UPDATE ANGKAT
-		    // =================================================
-		    updateAngkat();
-		});
+		);
 		// =====================================================
 		// POSISI AWAL
 		// =====================================================
-		mode = "tach";
+		mode =
+		    "tach";
 		selector.y =
 		    selectorYAwal;
 		// =====================================================
@@ -1877,9 +2026,12 @@ if (reversed == null) { reversed = false; }
 		updateAngkat();
 		// =====================================================
 		// UPDATE NILAI AWAL
+		//
+		// TANPA GETARAN SAAT AWAL
 		// =====================================================
 		calculateAndUpdate(
-		    rotasiNormal(jarum.rotation)
+		    rotasiNormal(currentRotation),
+		    false
 		);
 		var root = this;
 		// ==========================================
@@ -2043,13 +2195,13 @@ if (reversed == null) { reversed = false; }
 	this.txtHasilKaliDua = new cjs.Text("", "30px 'Times New Roman'");
 	this.txtHasilKaliDua.name = "txtHasilKaliDua";
 	this.txtHasilKaliDua.lineHeight = 35;
-	this.txtHasilKaliDua.lineWidth = 270;
+	this.txtHasilKaliDua.lineWidth = 471;
 	this.txtHasilKaliDua.parent = this;
 	this.txtHasilKaliDua.setTransform(742.0949,202.3,0.8374,0.8374);
 	this.txtDerajat = new cjs.Text("", "30px 'Times New Roman'");
 	this.txtDerajat.name = "txtDerajat";
 	this.txtDerajat.lineHeight = 35;
-	this.txtDerajat.lineWidth = 269;
+	this.txtDerajat.lineWidth = 481;
 	this.txtDerajat.parent = this;
 	this.txtDerajat.setTransform(743.1949,154.2,0.8374,0.8374);
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.txtDerajat},{t:this.txtHasilKaliDua},{t:this.belajarBtn},{t:this.statusBelajar},{t:this.hasilBtn},{t:this.statusHasil}]}).wait(1));
@@ -2202,10 +2354,10 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/Image.png?1788481503207", id:"Image"},
-		{src:"images/Bitmap2.png?1788481503207", id:"Bitmap2"},
-		{src:"images/BitmapGrTeknik.png?1788481503207", id:"BitmapGrTeknik"},
-		{src:"images/Busur.png?1788481503207", id:"Busur"}
+		{src:"images/Image.png?1788482778247", id:"Image"},
+		{src:"images/Bitmap2.png?1788482778247", id:"Bitmap2"},
+		{src:"images/BitmapGrTeknik.png?1788482778247", id:"BitmapGrTeknik"},
+		{src:"images/Busur.png?1788482778247", id:"Busur"}
 	],
 	preloads: []
 };
