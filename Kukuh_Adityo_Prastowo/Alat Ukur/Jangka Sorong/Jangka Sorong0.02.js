@@ -608,36 +608,39 @@ if (reversed == null) { reversed = false; }
 		}
 		
 		// Fungsi update posisi dan sorot strip merah
+		// Fungsi update posisi dan sorot strip merah
 		this.updatePositionsInMicrometer = function() {
-		  const micrometer = this.parent; // Pastikan parent ini adalah micrometer
+		  const micrometer = this.parent;
 		
 		  if (this.stripLines.length > 0) {
 		    const line0 = this.stripLines[0];
 		    const posInMicrometer = this.localToLocal(line0.x, line0.y, micrometer);
 		
-		    // Pastikan nilai mulai ada
 		    if (typeof this.parent.mulai !== "number") this.parent.mulai = 0;
 		
-		    // Ambil status multiSatuan (10 = mm, 1 = cm)
 		    const isMM = (this.parent.multiSatuan === 10 || this.parent.statusSatuan === "mm");
 		
-		    // ============ PENESUAIAN KE 150 MM & KETELITIAN 0.02 ============
-		    // Mengubah pembagi dari 0.5 ke 0.2 agar rentang fisik canvas mencapai 150 mm
-		    const nilaiMMUnclamped = (this.parent.mulai * 10) + (posInMicrometer.x / 0.2) * 0.02;
+		    // ============ FIX HP / MOBILE: DETEKSI DPR & RESOLUSI KOORDINAT ============
+		    // Mengambil rasio piksel layar HP agar pembacaan touch tetap presisi
+		    const dpr = (window.devicePixelRatio && window.devicePixelRatio > 1) ? window.devicePixelRatio : 1;
 		    
-		    // Kunci rentang pembacaan dari 0 mm hingga maksimum 150 mm
+		    // Gunakan nilai x murni tanpa pembulatan kasar dari touch event
+		    const posXFix = posInMicrometer.x;
+		
+		    // Hitung dasar nilai dalam mm
+		    const nilaiMMUnclamped = (this.parent.mulai * 10) + (posXFix / 0.2) * 0.02;
 		    const nilaiMM = Math.min(Math.max(nilaiMMUnclamped, 0), 150);
-		    const roundedMM = Math.round(nilaiMM / 0.02) * 0.02;
+		    
+		    // Trik Presisi HP: Tambahkan Number.EPSILON agar pembulatan float JS di HP tidak bug
+		    const roundedMM = Math.round((nilaiMM + Number.EPSILON) / 0.02) * 0.02;
 		
 		    // ============ FORMAT HASIL DAN TEKS SATUAN ============
 		    if (isMM) {
-		      // Mode MM: Menampilkan desimal 0.02 s/d 150.00 mm
 		      const roundedX = roundedMM.toFixed(2);
 		      if (micrometer.hasil && micrometer.hasil.hasil) {
 		        micrometer.hasil.hasil.text = `${roundedX} mm`;
 		      }
 		    } else {
-		      // Mode CM: Menampilkan desimal 0.000 s/d 15.000 cm
 		      const nilaiCM = roundedMM / 10;
 		      const roundedX = nilaiCM.toFixed(3);
 		      if (micrometer.hasil && micrometer.hasil.hasil) {
@@ -646,13 +649,10 @@ if (reversed == null) { reversed = false; }
 		    }
 		
 		    // ============ LOGIKA SOROT STRIP MERAH ============
-		    // Ambil nilai desimal dari nilai mm
-		    const desimal = +(roundedMM % 1).toFixed(2);
-		
-		    // Hitung index strip yang harus merah
+		    // Gunakan Math.abs & EPSILON agar sisa desimal ganjil di HP tidak tergulung ke 0
+		    const desimal = +((Math.abs(roundedMM) % 1) + Number.EPSILON).toFixed(2);
 		    const nomorMerah = Math.round(desimal / 0.02);
 		
-		    // Update tampilan semua strip
 		    this.stripLines.forEach((garis, j) => {
 		      const isLabel = (j % 5 === 0);
 		      const isMerah = (j === nomorMerah);
@@ -670,7 +670,7 @@ if (reversed == null) { reversed = false; }
 		    });
 		  }
 		};
-		// Jalankan update tiap frame
+		
 		this.on("tick", () => {
 		  this.updatePositionsInMicrometer();
 		});
@@ -1146,10 +1146,201 @@ if (reversed == null) { reversed = false; }
 
 	this.timeline.addTween(cjs.Tween.get(this.micrometer).wait(1));
 
+	// BG
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f().s("#FFFFFF").ss(1,1,1).p("Ehpkg7XMDTJAAAMAAAB2vMjTJAAAg");
+	this.shape.setTransform(638.3688,359.7754,0.9491,0.9491);
+
+	this.shape_1 = new cjs.Shape();
+	this.shape_1.graphics.f("rgba(255,255,255,0.498)").s().p("EhpkA7YMAAAh2vMDTJAAAMAAAB2vg");
+	this.shape_1.setTransform(638.3688,359.7754,0.9491,0.9491);
+
+	this.instance = new lib.BitmapGrTeknik();
+	this.instance.setTransform(55.55,654.3,0.7813,0.7813);
+
+	this.instance_1 = new lib.BitmapGrTeknik();
+	this.instance_1.setTransform(844.2,654.3,0.7813,0.7813);
+
+	this.instance_2 = new lib.BitmapGrTeknik();
+	this.instance_2.setTransform(578.5,654.3,0.7813,0.7813);
+
+	this.instance_3 = new lib.BitmapGrTeknik();
+	this.instance_3.setTransform(321.25,654.3,0.7813,0.7813);
+
+	this.instance_4 = new lib.BitmapGrTeknik();
+	this.instance_4.setTransform(967.65,593.65,0.7813,0.7813);
+
+	this.instance_5 = new lib.BitmapGrTeknik();
+	this.instance_5.setTransform(701.85,593.65,0.7813,0.7813);
+
+	this.instance_6 = new lib.BitmapGrTeknik();
+	this.instance_6.setTransform(436.15,593.65,0.7813,0.7813);
+
+	this.instance_7 = new lib.BitmapGrTeknik();
+	this.instance_7.setTransform(178.9,593.65,0.7813,0.7813);
+
+	this.instance_8 = new lib.BitmapGrTeknik();
+	this.instance_8.setTransform(55.55,523.45,0.7813,0.7813);
+
+	this.instance_9 = new lib.BitmapGrTeknik();
+	this.instance_9.setTransform(844.2,523.45,0.7813,0.7813);
+
+	this.instance_10 = new lib.BitmapGrTeknik();
+	this.instance_10.setTransform(578.5,523.45,0.7813,0.7813);
+
+	this.instance_11 = new lib.BitmapGrTeknik();
+	this.instance_11.setTransform(321.25,523.45,0.7813,0.7813);
+
+	this.instance_12 = new lib.BitmapGrTeknik();
+	this.instance_12.setTransform(55.55,398.05,0.7813,0.7813);
+
+	this.instance_13 = new lib.BitmapGrTeknik();
+	this.instance_13.setTransform(844.2,398.05,0.7813,0.7813);
+
+	this.instance_14 = new lib.BitmapGrTeknik();
+	this.instance_14.setTransform(578.5,398.05,0.7813,0.7813);
+
+	this.instance_15 = new lib.BitmapGrTeknik();
+	this.instance_15.setTransform(321.25,398.05,0.7813,0.7813);
+
+	this.instance_16 = new lib.BitmapGrTeknik();
+	this.instance_16.setTransform(960.05,332.7,0.7813,0.7813);
+
+	this.instance_17 = new lib.BitmapGrTeknik();
+	this.instance_17.setTransform(695.25,332.7,0.7813,0.7813);
+
+	this.instance_18 = new lib.BitmapGrTeknik();
+	this.instance_18.setTransform(429.45,332.7,0.7813,0.7813);
+
+	this.instance_19 = new lib.BitmapGrTeknik();
+	this.instance_19.setTransform(172.25,332.7,0.7813,0.7813);
+
+	this.instance_20 = new lib.BitmapGrTeknik();
+	this.instance_20.setTransform(57.4,264.35,0.7813,0.7813);
+
+	this.instance_21 = new lib.BitmapGrTeknik();
+	this.instance_21.setTransform(845.15,264.35,0.7813,0.7813);
+
+	this.instance_22 = new lib.BitmapGrTeknik();
+	this.instance_22.setTransform(579.4,264.35,0.7813,0.7813);
+
+	this.instance_23 = new lib.BitmapGrTeknik();
+	this.instance_23.setTransform(323.15,264.35,0.7813,0.7813);
+
+	this.instance_24 = new lib.BitmapGrTeknik();
+	this.instance_24.setTransform(967.65,200.65,0.7813,0.7813);
+
+	this.instance_25 = new lib.BitmapGrTeknik();
+	this.instance_25.setTransform(701.85,200.65,0.7813,0.7813);
+
+	this.instance_26 = new lib.BitmapGrTeknik();
+	this.instance_26.setTransform(436.15,200.65,0.7813,0.7813);
+
+	this.instance_27 = new lib.BitmapGrTeknik();
+	this.instance_27.setTransform(178.9,200.65,0.7813,0.7813);
+
+	this.instance_28 = new lib.BitmapGrTeknik();
+	this.instance_28.setTransform(55.55,139.9,0.7813,0.7813);
+
+	this.instance_29 = new lib.BitmapGrTeknik();
+	this.instance_29.setTransform(844.2,139.9,0.7813,0.7813);
+
+	this.instance_30 = new lib.BitmapGrTeknik();
+	this.instance_30.setTransform(578.5,139.9,0.7813,0.7813);
+
+	this.instance_31 = new lib.BitmapGrTeknik();
+	this.instance_31.setTransform(321.25,139.9,0.7813,0.7813);
+
+	this.instance_32 = new lib.BitmapGrTeknik();
+	this.instance_32.setTransform(960.05,73.5,0.7813,0.7813);
+
+	this.instance_33 = new lib.BitmapGrTeknik();
+	this.instance_33.setTransform(695.25,73.5,0.7813,0.7813);
+
+	this.instance_34 = new lib.BitmapGrTeknik();
+	this.instance_34.setTransform(429.45,73.5,0.7813,0.7813);
+
+	this.instance_35 = new lib.BitmapGrTeknik();
+	this.instance_35.setTransform(172.25,73.5,0.7813,0.7813);
+
+	this.instance_36 = new lib.BitmapGrTeknik();
+	this.instance_36.setTransform(57.4,4.25,0.7813,0.7813);
+
+	this.instance_37 = new lib.BitmapGrTeknik();
+	this.instance_37.setTransform(845.15,4.25,0.7813,0.7813);
+
+	this.instance_38 = new lib.BitmapGrTeknik();
+	this.instance_38.setTransform(579.4,4.25,0.7813,0.7813);
+
+	this.instance_39 = new lib.BitmapGrTeknik();
+	this.instance_39.setTransform(323.15,4.25,0.7813,0.7813);
+
+	this.instance_40 = new lib.BitmapGrTeknik();
+	this.instance_40.setTransform(967.65,454.05,0.7813,0.7813);
+
+	this.instance_41 = new lib.BitmapGrTeknik();
+	this.instance_41.setTransform(701.85,454.05,0.7813,0.7813);
+
+	this.instance_42 = new lib.BitmapGrTeknik();
+	this.instance_42.setTransform(436.15,454.05,0.7813,0.7813);
+
+	this.instance_43 = new lib.BitmapGrTeknik();
+	this.instance_43.setTransform(178.9,454.05,0.7813,0.7813);
+
+	this.shape_2 = new cjs.Shape();
+	this.shape_2.graphics.f().s("#FFFFFF").ss(1,1,1).p("EAAAA7sIAAhZIAApZIAAsLIAApZIAArPIAApZIAAsoIAApZIAArFIAApZIAAs9IAApZIAAhk");
+	this.shape_2.setTransform(1279.6868,357.9009,0.9491,0.9491);
+
+	this.shape_3 = new cjs.Shape();
+	this.shape_3.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-179.1,-30.3)).s().p("AvDEsIAApYIeHAAIAAJYg");
+	this.shape_3.setTransform(84.817,361.7447,0.9491,0.9491);
+
+	this.shape_4 = new cjs.Shape();
+	this.shape_4.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-179.1,-30.3)).s().p("AvDEsIAApYIeHAAIAAJYg");
+	this.shape_4.setTransform(84.817,625.5894,0.9491,0.9491);
+
+	this.shape_5 = new cjs.Shape();
+	this.shape_5.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-179.1,-30.3)).s().p("AvDEtIAApYIeHAAIAAJYg");
+	this.shape_5.setTransform(84.817,487.0235,0.9491,0.9491);
+
+	this.shape_6 = new cjs.Shape();
+	this.shape_6.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-179.1,-30.3)).s().p("AvDEsIAApYIeHAAIAAJYg");
+	this.shape_6.setTransform(84.817,233.6187,0.9491,0.9491);
+
+	this.shape_7 = new cjs.Shape();
+	this.shape_7.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-179.1,-30.3)).s().p("AvDEtIAApZIeHAAIAAJZg");
+	this.shape_7.setTransform(84.817,102.6455,0.9491,0.9491);
+
+	this.shape_8 = new cjs.Shape();
+	this.shape_8.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89.5,-30.3)).s().p("At7EsIAApXIb3AAIAAJXg");
+	this.shape_8.setTransform(1195.0287,552.5101,0.9491,0.9491);
+
+	this.shape_9 = new cjs.Shape();
+	this.shape_9.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89.5,-30.3)).s().p("At7EtIAApYIb3AAIAAJYg");
+	this.shape_9.setTransform(1195.0287,683.4833,0.9491,0.9491);
+
+	this.shape_10 = new cjs.Shape();
+	this.shape_10.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89.5,-30.3)).s().p("At7EtIAApZIb3AAIAAJZg");
+	this.shape_10.setTransform(1195.0287,427.2313,0.9491,0.9491);
+
+	this.shape_11 = new cjs.Shape();
+	this.shape_11.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89.5,-30.3)).s().p("At7EtIAApYIb3AAIAAJYg");
+	this.shape_11.setTransform(1195.0287,169.0812,0.9491,0.9491);
+
+	this.shape_12 = new cjs.Shape();
+	this.shape_12.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89,-30.3)).s().p("At2EsIAApYIbtAAIAAJYg");
+	this.shape_12.setTransform(1195.5033,293.4109,0.9491,0.9491);
+
+	this.shape_13 = new cjs.Shape();
+	this.shape_13.graphics.bf(img.BitmapGrTeknik, null, new cjs.Matrix2D(0.823,0,0,0.823,-89,-30.3)).s().p("At2EtIAApYIbtAAIAAJYg");
+	this.shape_13.setTransform(1195.5033,33.3625,0.9491,0.9491);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_13},{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.instance_43},{t:this.instance_42},{t:this.instance_41},{t:this.instance_40},{t:this.instance_39},{t:this.instance_38},{t:this.instance_37},{t:this.instance_36},{t:this.instance_35},{t:this.instance_34},{t:this.instance_33},{t:this.instance_32},{t:this.instance_31},{t:this.instance_30},{t:this.instance_29},{t:this.instance_28},{t:this.instance_27},{t:this.instance_26},{t:this.instance_25},{t:this.instance_24},{t:this.instance_23},{t:this.instance_22},{t:this.instance_21},{t:this.instance_20},{t:this.instance_19},{t:this.instance_18},{t:this.instance_17},{t:this.instance_16},{t:this.instance_15},{t:this.instance_14},{t:this.instance_13},{t:this.instance_12},{t:this.instance_11},{t:this.instance_10},{t:this.instance_9},{t:this.instance_8},{t:this.instance_7},{t:this.instance_6},{t:this.instance_5},{t:this.instance_4},{t:this.instance_3},{t:this.instance_2},{t:this.instance_1},{t:this.instance},{t:this.shape_1},{t:this.shape}]}).wait(1));
+
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(780.4,457.7,454.4,76.90000000000003);
+p.nominalBounds = new cjs.Rectangle(633.4,354.4,647.3000000000001,367);
 // library properties:
 lib.properties = {
 	id: '0EBB65583D4AB54DB138DE5BD487B772',
@@ -1159,7 +1350,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/BitmapGrTeknik.png?1788148989205", id:"BitmapGrTeknik"}
+		{src:"images/BitmapGrTeknik.png?1788505143431", id:"BitmapGrTeknik"}
 	],
 	preloads: []
 };
